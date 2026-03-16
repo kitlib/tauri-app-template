@@ -22,12 +22,12 @@ export function AboutPage() {
       setIsMaximized(maximized);
     });
 
-    // 监听窗口关闭请求，延迟 5 秒后销毁
+    // Listen for window close request, destroy after 5 seconds delay
     const unlistenClose = appWindow.onCloseRequested(async (event) => {
-      // 阻止默认关闭行为
+      // Prevent default close behavior
       event.preventDefault();
-      console.log("关于窗口关闭请求，5秒后销毁");
-      // 延迟 5 秒销毁
+      console.log("About window close requested, will destroy in 5 seconds");
+      // Destroy after 5 seconds delay
       await destroyWindow(appWindow.label, 5000);
     });
 
@@ -39,7 +39,7 @@ export function AboutPage() {
 
   const handleClose = async () => {
     const appWindow = getCurrentWebviewWindow();
-    // 延迟 5 秒销毁窗口
+    // Destroy window after 5 seconds delay
     await destroyWindow(appWindow.label, 5000);
   };
 
@@ -56,22 +56,22 @@ export function AboutPage() {
         )}
       >
         <TitleBar
-          title="关于"
+          title="About"
           showMinimize={false}
           showMaximize={false}
         />
 
-        {/* 内容区域 */}
+        {/* Content area */}}
         <main className="flex-1 flex items-center justify-center p-8 overflow-hidden">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl">Tauri App Template</CardTitle>
-              <CardDescription>现代化桌面应用开发模板</CardDescription>
+              <CardDescription>Modern Desktop Application Template</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">版本</span>
+                  <span className="text-muted-foreground">Version</span>
                   <span className="font-medium">1.0.0</span>
                 </div>
                 <div className="flex justify-between">
@@ -90,7 +90,7 @@ export function AboutPage() {
 
               <div className="pt-4 border-t">
                 <p className="text-xs text-center text-muted-foreground">
-                  基于 Tauri v2 + React 19 + TypeScript + shadcn/ui
+                  Built with Tauri v2 + React 19 + TypeScript + shadcn/ui
                 </p>
               </div>
 
@@ -100,7 +100,7 @@ export function AboutPage() {
                   GitHub
                 </Button>
                 <Button onClick={handleClose} className="flex-1" variant="outline">
-                  关闭
+                  Close
                 </Button>
               </div>
             </CardContent>

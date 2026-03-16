@@ -45,7 +45,7 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
-  // 监听 localStorage 变化，实现跨窗口主题同步
+  // Listen for localStorage changes to sync theme across windows
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === storageKey && e.newValue) {

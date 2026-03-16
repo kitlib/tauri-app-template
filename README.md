@@ -1,64 +1,66 @@
 # Tauri App Template
 
-基于 Tauri v2 + React 19 + TypeScript + shadcn/ui 的桌面应用模板。
+English | [简体中文](./README.zh-CN.md)
 
-## 预览
+A modern desktop application template built with Tauri v2 + React 19 + TypeScript + shadcn/ui.
 
-![应用截图](./screenshots/app.png)
+## Preview
 
-## 特点
+![App Screenshot](./screenshots/app.png)
 
-- ✨ **现代化技术栈** - Tauri v2 + React 19 + TypeScript + Vite
-- 🎨 **精美 UI 组件** - 集成 shadcn/ui 组件库和 Tailwind CSS v4
-- 🌓 **暗色模式支持** - 内置亮色/暗色主题切换
-- 🖼️ **自定义标题栏** - 无边框透明窗口，支持拖拽、最小化、最大化、关闭
-- 🗂️ **多窗口管理** - 支持创建子窗口、窗口生命周期管理、延迟销毁机制
-- 🔔 **系统托盘集成** - 支持托盘图标、菜单和窗口隐藏/显示
-- 📦 **开箱即用** - 预配置 Prettier、TypeScript 严格模式
-- 🚀 **快速开发** - Vite HMR + Tauri 热重载
+## Features
 
-## 技术栈
+- ✨ **Modern Tech Stack** - Tauri v2 + React 19 + TypeScript + Vite
+- 🎨 **Beautiful UI Components** - Integrated shadcn/ui component library and Tailwind CSS v4
+- 🌓 **Dark Mode Support** - Built-in light/dark theme toggle
+- 🖼️ **Custom Titlebar** - Frameless transparent window with drag, minimize, maximize, and close support
+- 🗂️ **Multi-Window Management** - Support for child windows, window lifecycle management, and delayed destruction
+- 🔔 **System Tray Integration** - Tray icon, menu, and window show/hide support
+- 📦 **Ready to Use** - Pre-configured with Prettier and TypeScript strict mode
+- 🚀 **Fast Development** - Vite HMR + Tauri hot reload
 
-- **桌面框架**: [Tauri v2](https://tauri.app/)
-- **前端框架**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **构建工具**: [Vite](https://vite.dev/)
-- **UI 组件**: [shadcn/ui](https://ui.shadcn.com/)
-- **样式方案**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **代码格式化**: [Prettier](https://prettier.io/)
+## Tech Stack
 
-## 开始使用
+- **Desktop Framework**: [Tauri v2](https://tauri.app/)
+- **Frontend Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vite.dev/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Code Formatting**: [Prettier](https://prettier.io/)
 
-### 环境要求
+## Getting Started
+
+### Prerequisites
 
 - Node.js >= 18
 - pnpm >= 9
 - Rust >= 1.70
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 pnpm install
 ```
 
-### 开发模式
+### Development Mode
 
 ```bash
 pnpm tauri dev
 ```
 
-### 构建发布
+### Build for Production
 
 ```bash
 pnpm tauri build
 ```
 
-## 添加 shadcn/ui 组件
+## Adding shadcn/ui Components
 
 ```bash
 pnpm dlx shadcn@latest add <component-name>
 ```
 
-示例：
+Examples:
 
 ```bash
 pnpm dlx shadcn@latest add button
@@ -66,31 +68,31 @@ pnpm dlx shadcn@latest add input
 pnpm dlx shadcn@latest add dialog
 ```
 
-## 代码格式化
+## Code Formatting
 
 ```bash
-pnpm format        # 格式化代码
-pnpm format:check  # 检查代码格式
+pnpm format        # Format code
+pnpm format:check  # Check code formatting
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 .
-├── src/                    # 前端源码
-│   ├── components/         # React 组件
-│   │   └── ui/            # shadcn/ui 组件
-│   ├── lib/               # 工具函数
-│   ├── App.tsx            # 主应用组件
-│   └── main.tsx           # 入口文件
-├── src-tauri/             # Tauri/Rust 后端
-│   ├── src/               # Rust 源码
-│   └── tauri.conf.json    # Tauri 配置
-├── components.json        # shadcn/ui 配置
+├── src/                    # Frontend source code
+│   ├── components/         # React components
+│   │   └── ui/            # shadcn/ui components
+│   ├── lib/               # Utility functions
+│   ├── App.tsx            # Main app component
+│   └── main.tsx           # Entry point
+├── src-tauri/             # Tauri/Rust backend
+│   ├── src/               # Rust source code
+│   └── tauri.conf.json    # Tauri configuration
+├── components.json        # shadcn/ui configuration
 └── package.json
 ```
 
-## IDE 推荐
+## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/)
 - [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode)

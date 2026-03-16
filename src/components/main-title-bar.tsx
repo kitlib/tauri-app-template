@@ -12,7 +12,7 @@ export function MainTitleBar() {
 
   const handleOpenAbout = async () => {
     await createWindow("about", {
-      title: "关于",
+      title: "About",
       url: "/about",
       width: 500,
       height: 400,
@@ -35,7 +35,7 @@ export function MainTitleBar() {
           <button
             onClick={handleOpenAbout}
             className="title-bar-btn mr-1"
-            aria-label="关于"
+            aria-label="About"
           >
             <Info className="h-4 w-4" />
           </button>
@@ -43,7 +43,7 @@ export function MainTitleBar() {
           <button
             onClick={handleToggleTheme}
             className="title-bar-btn mr-0.5"
-            aria-label="切换主题"
+            aria-label="Toggle theme"
           >
             {theme === "dark" ? (
               <Sun className="h-4 w-4" />

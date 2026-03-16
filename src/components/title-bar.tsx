@@ -29,10 +29,10 @@ export function TitleBar({
 
     const appWindow = getCurrentWebviewWindow();
 
-    // 初始化最大化状态
+    // Initialize maximized state
     appWindow.isMaximized().then(setIsMaximized);
 
-    // 监听窗口尺寸变化
+    // Listen for window resize events
     const unlisten = appWindow.onResized(async () => {
       const maximized = await appWindow.isMaximized();
       setIsMaximized(maximized);
@@ -73,7 +73,7 @@ export function TitleBar({
         showMaximize && isMaximized ? "" : "rounded-t-lg"
       )}
     >
-      {/* 左侧：标题 + 拖拽区域 */}
+      {/* Left: Title + Drag region */}
       <div
         data-tauri-drag-region
         onDoubleClick={handleDragRegionDoubleClick}
@@ -83,7 +83,7 @@ export function TitleBar({
         {leftActions}
       </div>
 
-      {/* 右侧：控制按钮 */}
+      {/* Right: Control buttons */}
       <div className="flex items-center">
         {rightActions}
 
@@ -95,7 +95,7 @@ export function TitleBar({
           <button
             onClick={handleMinimize}
             className="title-bar-control"
-            aria-label="最小化"
+            aria-label="Minimize"
           >
             <Minus className="h-4 w-4" />
           </button>
@@ -105,7 +105,7 @@ export function TitleBar({
           <button
             onClick={handleToggleMaximize}
             className="title-bar-control"
-            aria-label={isMaximized ? "还原" : "最大化"}
+            aria-label={isMaximized ? "Restore" : "Maximize"}
           >
             {isMaximized ? (
               <Minimize2 className="h-4 w-4" />
@@ -119,7 +119,7 @@ export function TitleBar({
           <button
             onClick={handleClose}
             className="title-bar-control hover:bg-destructive hover:text-destructive-foreground"
-            aria-label="关闭"
+            aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>

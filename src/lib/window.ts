@@ -10,11 +10,11 @@ export async function showWindow(label: string) {
     return;
   }
 
-  // 清除销毁定时器
+  // Clear destroy timer
   if (destroyTimers[label]) {
     clearTimeout(destroyTimers[label]);
     delete destroyTimers[label];
-    console.log("清除窗口销毁定时器:", label);
+    console.log("Cleared window destroy timer:", label);
   }
 
   if (!(await window.isVisible())) {
@@ -36,16 +36,16 @@ export async function hideWindow(label: string, destroyDelay = 5000) {
 
   await window.hide();
 
-  // 隐藏后延迟销毁
+  // Destroy after hiding with delay
   await destroyWindow(label, destroyDelay);
 }
 
 /**
- * 计算子窗口相对于父窗口的居中位置
- * @param width 子窗口宽度（逻辑像素）
- * @param height 子窗口高度（逻辑像素）
- * @param parentLabel 父窗口标签，默认为当前窗口
- * @returns 居中位置坐标或 center 标志
+ * Calculate centered position of child window relative to parent window
+ * @param width Child window width (logical pixels)
+ * @param height Child window height (logical pixels)
+ * @param parentLabel Parent window label, defaults to current window
+ * @returns Centered position coordinates or center flag
  */
 export async function calcCenterPosition(
   width: number,
@@ -61,7 +61,7 @@ export async function calcCenterPosition(
   }
 
   try {
-    // 如果父窗口最小化，使用屏幕居中
+    // Use screen center if parent window is minimized
     if (await parentWindow.isMinimized()) {
       return { center: true };
     }
@@ -70,25 +70,25 @@ export async function calcCenterPosition(
     const size = await parentWindow.outerSize();
     const scaleFactor = await parentWindow.scaleFactor();
 
-    // 验证所有值都存在
+    // Validate all values exist
     if (!position || !size || !scaleFactor) {
-      console.warn("无法获取父窗口信息，使用屏幕居中");
+      console.warn("Unable to get parent window info, using screen center");
       return { center: true };
     }
 
-    // 计算居中位置（考虑 DPI 缩放）
+    // Calculate centered position (considering DPI scaling)
     const x = (position.x + (size.width - width * scaleFactor) / 2) / scaleFactor;
     const y = (position.y + (size.height - height * scaleFactor) / 2) / scaleFactor;
 
-    // 验证计算结果
+    // Validate calculation result
     if (isNaN(x) || isNaN(y)) {
-      console.warn("计算位置失败，使用屏幕居中");
+      console.warn("Position calculation failed, using screen center");
       return { center: true };
     }
 
     return { x, y };
   } catch (e) {
-    console.warn("计算居中位置失败:", e);
+    console.warn("Failed to calculate centered position:", e);
     return { center: true };
   }
 }
@@ -100,11 +100,11 @@ export async function destroyWindow(label: string, delay = 0) {
   }
 
   if (!delay) {
-    // 立即销毁
+    // Destroy immediately
     await emit("destroy-window:" + label);
     await window.destroy();
   } else {
-    // 延迟销毁
+    // Destroy with delay
     if (destroyTimers[label]) {
       clearTimeout(destroyTimers[label]);
     }
@@ -114,7 +114,7 @@ export async function destroyWindow(label: string, delay = 0) {
       await window.destroy();
       delete destroyTimers[label];
     }, delay) as unknown as number;
-    console.log(`窗口将在 ${delay}ms 后销毁:`, label);
+    console.log(`Window will be destroyed in ${delay}ms:`, label);
   }
 }
 
@@ -154,7 +154,7 @@ export async function createWindow(
   }
   createWindowLoading[label] = true;
 
-  // 清除销毁定时器
+  // Clear destroy timer
   if (destroyTimers[label]) {
     clearTimeout(destroyTimers[label]);
     delete destroyTimers[label];
@@ -163,11 +163,11 @@ export async function createWindow(
   try {
     let window = await WebviewWindow.getByLabel(label);
 
-    // 如果窗口已存在，直接显示并居中
+    // If window already exists, show it directly and center it
     if (window) {
-      console.log("窗口已存在，直接显示:", label);
+      console.log("Window already exists, showing:", label);
 
-      // 如果指定了父窗口，重新计算居中位置
+      // If parent window is specified, recalculate centered position
       if (options.parent) {
         try {
           const childWidth = options.width || 500;
@@ -179,26 +179,26 @@ export async function createWindow(
           );
 
           if ("x" in centerPos && "y" in centerPos) {
-            // 使用 Logical 类型设置窗口位置
+            // Use Logical type to set window position
             await window.setPosition({
               type: "Logical",
               x: centerPos.x,
               y: centerPos.y,
             });
-            console.log("窗口已居中:", centerPos);
+            console.log("Window centered:", centerPos);
           }
         } catch (e) {
-          console.log("设置窗口位置失败:", e);
+          console.log("Failed to set window position:", e);
         }
       }
 
-      // 设置完位置后再显示
+      // Show window after setting position
       await showWindow(label);
       createWindowLoading[label] = false;
       return;
     }
 
-    // 如果需要居中于父窗口，计算位置
+    // If need to center relative to parent window, calculate position
     let finalOptions = { ...options };
     if (options.parent && !options.x && !options.y) {
       const childWidth = options.width || 500;
@@ -221,19 +221,19 @@ export async function createWindow(
 
     const webview = new WebviewWindow(label, finalOptions);
     await webview.once("tauri://created", async () => {
-      console.log("创建窗口成功:", label);
+      console.log("Window created successfully:", label);
       handlers?.onCreated?.();
 
-      // 注册销毁回调
+      // Register destroy callback
       if (handlers?.onDestroy) {
         await once("destroy-window:" + label, () => {
-          console.log("销毁窗口:", label);
+          console.log("Window destroyed:", label);
           handlers.onDestroy?.();
         });
       }
     });
     await webview.once("tauri://error", (e) => {
-      console.log("创建窗口失败:", label, e);
+      console.log("Failed to create window:", label, e);
       handlers?.onError?.();
     });
   } finally {

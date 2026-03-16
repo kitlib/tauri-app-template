@@ -12,7 +12,7 @@ fn greet(name: &str) -> String {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
-            // 当尝试启动第二个实例时，聚焦到已存在的主窗口
+            // When attempting to start a second instance, focus the existing main window
             if let Some(window) = app.get_webview_window("main") {
                 let _ = window.set_focus();
                 let _ = window.unminimize();

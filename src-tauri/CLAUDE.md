@@ -1,32 +1,29 @@
-[根目录](../CLAUDE.md) > **src-tauri**
+[Root](../CLAUDE.md) > **src-tauri**
 
-# 后端模块 (src-tauri)
+# Backend Module (src-tauri)
 
-## 模块职责
+## Responsibilities
 
-负责系统级调用、原生功能集成和跨平台桌面应用封装。基于 Tauri v2 + Rust 构建安全、高性能的桌面应用后端。
+System-level calls, native features, and cross-platform desktop app wrapper. Built with Tauri v2 + Rust for secure, high-performance desktop applications.
 
-## 入口与启动
+## Entry Points
 
-- **入口文件**: `src/main.rs`
-- **应用逻辑**: `src/lib.rs`
-- **构建配置**: `Cargo.toml`
+- **Entry**: `src/main.rs`
+- **App Logic**: `src/lib.rs`
+- **Build Config**: `Cargo.toml`
 
-构建命令：
 ```bash
-pnpm tauri dev   # 开发模式构建
-pnpm tauri build # 生产版本构建
+pnpm tauri dev   # Development build
+pnpm tauri build # Production build
 ```
 
-## 对外接口
+## Commands
 
-### Tauri 命令
+| Command | Parameters | Returns | Description |
+|---------|------------|---------|-------------|
+| `greet` | `name: &str` | `String` | Example greeting command |
 
-| 命令名 | 参数 | 返回值 | 说明 |
-|--------|------|--------|------|
-| `greet` | `name: &str` | `String` | 示例命令，返回问候语 |
-
-### 命令定义示例
+### Define Command
 
 ```rust
 // src/lib.rs
@@ -36,48 +33,41 @@ fn greet(name: &str) -> String {
 }
 ```
 
-### 前端调用示例
+### Call from Frontend
 
 ```typescript
 import { invoke } from "@tauri-apps/api/core";
 
 const result = await invoke("greet", { name: "World" });
-console.log(result); // "Hello, World! You've been greeted from Rust!"
+// Returns: "Hello, World! You've been greeted from Rust!"
 ```
 
-### 注册命令
+### Register Command
 
 ```rust
 // src/lib.rs
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])  // 注册命令
+        .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 ```
 
-## 关键依赖与配置
+## Key Dependencies
 
-### Cargo 依赖
+| Package | Version | Purpose |
+|---------|---------|---------|
+| tauri | 2 | Tauri framework core |
+| tauri-plugin-opener | 2 | Open external links |
+| serde | 1 | Serialization framework |
+| serde_json | 1 | JSON serialization |
+| tauri-build | 2 | Build scripts (dev) |
 
-| 包名 | 版本 | 用途 |
-|------|------|------|
-| tauri | 2 | Tauri 框架核心 |
-| tauri-plugin-opener | 2 | 外部链接打开插件 |
-| serde | 1 | 序列化框架 |
-| serde_json | 1 | JSON 序列化 |
+## Configuration
 
-### 构建依赖
-
-| 包名 | 版本 | 用途 |
-|------|------|------|
-| tauri-build | 2 | Tauri 构建脚本 |
-
-### 配置文件
-
-#### tauri.conf.json
+### tauri.conf.json
 
 ```json
 {
@@ -89,77 +79,32 @@ pub fn run() {
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
-  },
-  "app": {
-    "windows": [
-      {
-        "title": "tauri-app-template",
-        "width": 800,
-        "height": 600
-      }
-    ]
-  },
-  "bundle": {
-    "active": true,
-    "targets": "all"
   }
 }
 ```
 
-#### capabilities/default.json
+### capabilities/default.json
 
 ```json
 {
   "identifier": "default",
-  "description": "Capability for the main window",
   "windows": ["main"],
-  "permissions": [
-    "core:default",
-    "opener:default"
-  ]
+  "permissions": ["core:default", "opener:default"]
 }
 ```
 
-### 库配置
-
-```toml
-# Cargo.toml
-[lib]
-name = "tauri_app_template_lib"
-crate-type = ["staticlib", "cdylib", "rlib"]
-```
-
-## 数据模型
-
-当前为模板项目，无持久化数据模型。
-
-## 测试与质量
-
-### 运行测试
+## Testing
 
 ```bash
 cd src-tauri
 cargo test
 ```
 
-### Rust 编码规范
+## Common Tasks
 
-- 遵循 Rust 标准命名规范
-- 使用 `#[tauri::command]` 宏暴露命令
-- Windows 发布版不显示控制台窗口
+### Add New Command
 
-### Windows 配置
-
-```rust
-// src/main.rs
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-```
-
-## 常见问题 (FAQ)
-
-### 如何添加新的 Tauri 命令？
-
-1. 在 `src/lib.rs` 中定义命令：
+1. Define in `src/lib.rs`:
 ```rust
 #[tauri::command]
 fn my_command(arg: &str) -> String {
@@ -167,59 +112,45 @@ fn my_command(arg: &str) -> String {
 }
 ```
 
-2. 注册命令：
+2. Register:
 ```rust
 .invoke_handler(tauri::generate_handler![greet, my_command])
 ```
 
-### 如何添加新插件？
+### Add Plugin
 
-1. 添加依赖到 `Cargo.toml`：
+1. Add to `Cargo.toml`:
 ```toml
 [dependencies]
 tauri-plugin-clipboard = "2"
 ```
 
-2. 初始化插件：
+2. Initialize:
 ```rust
 .plugin(tauri_plugin_clipboard::init())
 ```
 
-3. 更新权限配置 `capabilities/default.json`
+3. Update `capabilities/default.json`
 
-### 如何配置应用图标？
+### Configure App Icons
 
-图标位于 `icons/` 目录：
-- `icon.png` - 基础图标
-- `icon.ico` - Windows 图标
-- `icon.icns` - macOS 图标
-- 各尺寸 PNG 文件用于不同平台
+Icons in `icons/` directory:
+- `icon.png` - Base icon
+- `icon.ico` - Windows
+- `icon.icns` - macOS
+- Various PNG sizes for different platforms
 
-## 相关文件清单
+## File Structure
 
 ```
 src-tauri/
-├── Cargo.toml           # Rust 依赖配置
-├── tauri.conf.json      # Tauri 应用配置
-├── build.rs             # Rust 构建脚本
-├── .gitignore           # Git 忽略配置
+├── Cargo.toml           # Rust dependencies
+├── tauri.conf.json      # Tauri app config
+├── build.rs             # Build script
 ├── src/
-│   ├── main.rs          # Rust 入口
-│   └── lib.rs           # Tauri 应用逻辑和命令定义
+│   ├── main.rs          # Entry point
+│   └── lib.rs           # App logic & commands
 ├── capabilities/
-│   └── default.json     # 权限配置
-└── icons/               # 应用图标
-    ├── icon.png         # 基础图标
-    ├── icon.ico         # Windows 图标
-    ├── icon.icns        # macOS 图标
-    ├── 32x32.png
-    ├── 128x128.png
-    ├── 128x128@2x.png
-    └── ... (其他尺寸)
+│   └── default.json     # Permissions
+└── icons/               # App icons
 ```
-
-## 变更记录 (Changelog)
-
-| 日期 | 变更内容 |
-|------|----------|
-| 2026-03-16 | 初始化模块文档 |

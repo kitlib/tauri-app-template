@@ -8,18 +8,18 @@ use tauri::{
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("system-tray")
         .setup(|app, _| {
-            // 创建托盘菜单
+            // Create tray menu
             let menu = Menu::with_id_and_items(
                 app,
                 "system-tray",
                 &[
-                    &MenuItem::with_id(app, "show", "显示窗口", true, None::<&str>)?,
+                    &MenuItem::with_id(app, "show", "Show Window", true, None::<&str>)?,
                     &PredefinedMenuItem::separator(app)?,
-                    &MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?,
+                    &MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?,
                 ],
             )?;
 
-            // 构建托盘图标
+            // Build tray icon
             TrayIconBuilder::new()
                 .menu(&menu)
                 .icon(app.default_window_icon().unwrap().clone())
@@ -32,7 +32,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                             button_state: MouseButtonState::Up,
                             ..
                         } => {
-                            // 左键点击显示主窗口
+                            // Left click to show main window
                             let app = tray.app_handle();
                             if let Some(window) = app.get_webview_window("main") {
                                 let _ = window.show();
@@ -63,7 +63,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             let window_clone = window.clone();
             window.on_window_event(move |event| {
                 if let tauri::WindowEvent::CloseRequested { api, .. } = event {
-                    // 关闭窗口时隐藏而不是退出
+                    // Hide window instead of exiting when close is requested
                     let _ = window_clone.hide();
                     api.prevent_close();
                 }
