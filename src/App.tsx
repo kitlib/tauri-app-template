@@ -1,16 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
+import { TitleBar } from "@/components/title-bar";
+import { cn } from "@/lib/utils";
 import "./App.css";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
+  const [isMaximized, setIsMaximized] = useState(false);
+
+  useEffect(() => {
+    const appWindow = getCurrentWebviewWindow();
+
+    appWindow.isMaximized().then(setIsMaximized);
+
+    const unlisten = appWindow.onResized(async () => {
+      const maximized = await appWindow.isMaximized();
+      setIsMaximized(maximized);
+    });
+
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, []);
 
   async function greet() {
     setGreetMsg(await invoke("greet", { name }));
@@ -18,10 +37,15 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="tauri-ui-theme">
-      <div className="fixed right-4 top-4 z-50">
-        <ModeToggle />
-      </div>
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center gap-8 p-8">
+      <div
+        className={cn(
+          "h-screen w-screen flex flex-col overflow-hidden bg-background",
+          isMaximized ? "" : "rounded-md border border-border"
+        )}
+      >
+        <TitleBar />
+
+        <main className="container mx-auto flex flex-1 flex-col items-center justify-center gap-8 p-8 overflow-auto">
         <div className="flex flex-col items-center gap-4">
           <h1 className="text-4xl font-bold tracking-tight">Welcome to Tauri + React</h1>
           <p className="text-muted-foreground">
@@ -97,7 +121,8 @@ function App() {
           <span>•</span>
           <span>Tauri v2</span>
         </div>
-      </main>
+        </main>
+      </div>
     </ThemeProvider>
   );
 }
