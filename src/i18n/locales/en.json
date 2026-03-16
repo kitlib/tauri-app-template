@@ -1,0 +1,39 @@
+{
+  "app": {
+    "title": "Tauri App Template",
+    "welcome": "Welcome to Tauri + React",
+    "description": "Modern desktop application template with Tauri v2, React 19, and shadcn/ui"
+  },
+  "greet": {
+    "title": "Greet from Rust",
+    "description": "Test the communication between frontend and Tauri backend",
+    "placeholder": "Enter your name...",
+    "button": "Greet"
+  },
+  "about": {
+    "title": "About",
+    "button": "About",
+    "appName": "Tauri App Template",
+    "version": "Version",
+    "description": "A modern desktop application template built with Tauri v2, React 19, and shadcn/ui.",
+    "features": "Features",
+    "feature1": "Tauri v2 - Lightweight desktop app framework",
+    "feature2": "React 19 - Latest React version",
+    "feature3": "TypeScript - Type safety",
+    "feature4": "Tailwind CSS v4 - Modern CSS framework",
+    "feature5": "shadcn/ui - Beautiful UI components",
+    "close": "Close"
+  },
+  "theme": {
+    "toggle": "Toggle theme"
+  },
+  "language": {
+    "toggle": "Switch language",
+    "en": "English",
+    "zh": "中文"
+  },
+  "tray": {
+    "show": "Show Window",
+    "quit": "Quit"
+  }
+}

@@ -79,7 +79,7 @@ export function TitleBar({
         onDoubleClick={handleDragRegionDoubleClick}
         className="flex-grow flex items-center pl-2 gap-2"
       >
-        {title && <span className="text-sm font-medium">{title}</span>}
+        {title && <span className="text-sm font-medium text-muted-foreground">{title}</span>}
         {leftActions}
       </div>
 

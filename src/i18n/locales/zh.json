@@ -1,0 +1,39 @@
+{
+  "app": {
+    "title": "Tauri 应用模板",
+    "welcome": "欢迎使用 Tauri + React",
+    "description": "基于 Tauri v2、React 19 和 shadcn/ui 的现代桌面应用模板"
+  },
+  "greet": {
+    "title": "来自 Rust 的问候",
+    "description": "测试前端与 Tauri 后端的通信",
+    "placeholder": "输入你的名字...",
+    "button": "问候"
+  },
+  "about": {
+    "title": "关于",
+    "button": "关于",
+    "appName": "Tauri 应用模板",
+    "version": "版本",
+    "description": "基于 Tauri v2、React 19 和 shadcn/ui 构建的现代桌面应用模板。",
+    "features": "特性",
+    "feature1": "Tauri v2 - 轻量级桌面应用框架",
+    "feature2": "React 19 - 最新的 React 版本",
+    "feature3": "TypeScript - 类型安全",
+    "feature4": "Tailwind CSS v4 - 现代 CSS 框架",
+    "feature5": "shadcn/ui - 精美的 UI 组件",
+    "close": "关闭"
+  },
+  "theme": {
+    "toggle": "切换主题"
+  },
+  "language": {
+    "toggle": "切换语言",
+    "en": "English",
+    "zh": "中文"
+  },
+  "tray": {
+    "show": "显示窗口",
+    "quit": "退出"
+  }
+}

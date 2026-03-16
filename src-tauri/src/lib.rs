@@ -8,6 +8,11 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+#[tauri::command]
+fn update_tray_menu(app: tauri::AppHandle, show_text: String, quit_text: String) -> Result<(), String> {
+    plugins::system_tray::update_tray_menu(&app, &show_text, &quit_text)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -21,7 +26,7 @@ pub fn run() {
         }))
         .plugin(tauri_plugin_opener::init())
         .plugin(plugins::system_tray::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, update_tray_menu])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

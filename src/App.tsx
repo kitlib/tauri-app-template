@@ -9,12 +9,15 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import { MainTitleBar } from "@/components/main-title-bar";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
+import { listen } from "@tauri-apps/api/event";
 import "./App.css";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
   const [isMaximized, setIsMaximized] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const appWindow = getCurrentWebviewWindow();
@@ -26,10 +29,30 @@ function App() {
       setIsMaximized(maximized);
     });
 
+    // Listen for language change events from other windows
+    const unlistenLanguage = listen<{ language: string }>("language-changed", (event) => {
+      console.log("Language changed event received:", event.payload.language);
+      i18n.changeLanguage(event.payload.language);
+    });
+
+    // Initialize tray menu with current language
+    const initTrayMenu = async () => {
+      try {
+        await invoke("update_tray_menu", {
+          showText: t("tray.show"),
+          quitText: t("tray.quit"),
+        });
+      } catch (error) {
+        console.error("Failed to initialize tray menu:", error);
+      }
+    };
+    initTrayMenu();
+
     return () => {
       unlisten.then((fn) => fn());
+      unlistenLanguage.then((fn) => fn());
     };
-  }, []);
+  }, [i18n, t]);
 
   async function greet() {
     setGreetMsg(await invoke("greet", { name }));
@@ -47,9 +70,9 @@ function App() {
 
         <main className="container mx-auto flex flex-1 flex-col items-center justify-center gap-8 p-8 overflow-hidden">
         <div className="flex flex-col items-center gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">Welcome to Tauri + React</h1>
+          <h1 className="text-4xl font-bold tracking-tight">{t("app.welcome")}</h1>
           <p className="text-muted-foreground">
-            Modern desktop application template with Tauri v2, React 19, and shadcn/ui
+            {t("app.description")}
           </p>
         </div>
 
@@ -82,9 +105,9 @@ function App() {
 
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Greet from Rust</CardTitle>
+            <CardTitle>{t("greet.title")}</CardTitle>
             <CardDescription>
-              Test the communication between frontend and Tauri backend
+              {t("greet.description")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -99,10 +122,10 @@ function App() {
                 id="greet-input"
                 value={name}
                 onChange={(e) => setName(e.currentTarget.value)}
-                placeholder="Enter your name..."
+                placeholder={t("greet.placeholder")}
                 className="flex-1"
               />
-              <Button type="submit">Greet</Button>
+              <Button type="submit">{t("greet.button")}</Button>
             </form>
             {greetMsg && (
               <p className="mt-4 rounded-md bg-muted p-3 text-sm">{greetMsg}</p>

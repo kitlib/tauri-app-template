@@ -1,4 +1,3 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { Github } from "lucide-react";
@@ -8,9 +7,13 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { destroyWindow } from "@/lib/window";
+import { useTranslation } from "react-i18next";
+import { listen } from "@tauri-apps/api/event";
+import "../i18n";
 
 export function AboutPage() {
   const [isMaximized, setIsMaximized] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const appWindow = getCurrentWebviewWindow();
@@ -31,11 +34,18 @@ export function AboutPage() {
       await destroyWindow(appWindow.label, 5000);
     });
 
+    // Listen for language change events from other windows
+    const unlistenLanguage = listen<{ language: string }>("language-changed", (event) => {
+      console.log("Language changed event received:", event.payload.language);
+      i18n.changeLanguage(event.payload.language);
+    });
+
     return () => {
       unlistenResize.then((fn) => fn());
       unlistenClose.then((fn) => fn());
+      unlistenLanguage.then((fn) => fn());
     };
-  }, []);
+  }, [i18n]);
 
   const handleClose = async () => {
     const appWindow = getCurrentWebviewWindow();
@@ -56,55 +66,42 @@ export function AboutPage() {
         )}
       >
         <TitleBar
-          title="About"
+          title={t("about.title")}
           showMinimize={false}
           showMaximize={false}
         />
 
-        {/* Content area */}}
-        <main className="flex-1 flex items-center justify-center p-8 overflow-hidden">
-          <Card className="w-full max-w-md">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Tauri App Template</CardTitle>
-              <CardDescription>Modern Desktop Application Template</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Version</span>
-                  <span className="font-medium">1.0.0</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tauri</span>
-                  <span className="font-medium">v2</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">React</span>
-                  <span className="font-medium">19</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">TypeScript</span>
-                  <span className="font-medium">5.8</span>
-                </div>
-              </div>
+        {/* Content area */}
+        <main className="flex-1 flex items-center justify-center overflow-hidden">
+          <div className="w-full max-w-xs space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold">{t("about.appName")}</h2>
+            </div>
 
-              <div className="pt-4 border-t">
-                <p className="text-xs text-center text-muted-foreground">
-                  Built with Tauri v2 + React 19 + TypeScript + shadcn/ui
-                </p>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t("about.version")}</span>
+                <span className="font-medium">1.0.0</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Tauri</span>
+                <span className="font-medium">v2</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">React</span>
+                <span className="font-medium">19</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">TypeScript</span>
+                <span className="font-medium">5.8</span>
+              </div>
+            </div>
 
-              <div className="flex gap-2">
-                <Button onClick={handleOpenGithub} className="flex-1" variant="outline">
-                  <Github className="h-4 w-4 mr-2" />
-                  GitHub
-                </Button>
-                <Button onClick={handleClose} className="flex-1" variant="outline">
-                  Close
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+            <Button onClick={handleOpenGithub} className="w-full" variant="outline">
+              <Github className="h-4 w-4 mr-2" />
+              GitHub
+            </Button>
+          </div>
         </main>
       </div>
     </ThemeProvider>
