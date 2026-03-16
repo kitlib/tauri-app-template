@@ -15,7 +15,7 @@ fn update_tray_menu(app: tauri::AppHandle, show_text: String, quit_text: String)
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
+    let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             // When attempting to start a second instance, focus the existing main window
             if let Some(window) = app.get_webview_window("main") {
@@ -26,7 +26,15 @@ pub fn run() {
         }))
         .plugin(tauri_plugin_opener::init())
         .plugin(plugins::system_tray::init())
-        .invoke_handler(tauri::generate_handler![greet, update_tray_menu])
+        .invoke_handler(tauri::generate_handler![greet, update_tray_menu]);
+
+    // Only enable updater in release mode
+    #[cfg(not(debug_assertions))]
+    {
+        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+    }
+
+    builder
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

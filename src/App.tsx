@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import { MainTitleBar } from "@/components/main-title-bar";
+import { UpdaterDialog } from "@/components/updater-dialog";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
@@ -60,90 +61,85 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="tauri-ui-theme">
+      <UpdaterDialog />
       <div
         className={cn(
-          "h-screen w-screen flex flex-col overflow-hidden bg-background",
-          isMaximized ? "" : "rounded-lg border border-border"
+          "bg-background flex h-screen w-screen flex-col overflow-hidden",
+          isMaximized ? "" : "border-border rounded-lg border"
         )}
       >
         <MainTitleBar />
 
-        <main className="container mx-auto flex flex-1 flex-col items-center justify-center gap-8 p-8 overflow-hidden">
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">{t("app.welcome")}</h1>
-          <p className="text-muted-foreground">
-            {t("app.description")}
-          </p>
-        </div>
+        <main className="container mx-auto flex flex-1 flex-col items-center justify-center gap-8 overflow-hidden p-8">
+          <div className="flex flex-col items-center gap-4">
+            <h1 className="text-4xl font-bold tracking-tight">{t("app.welcome")}</h1>
+            <p className="text-muted-foreground">{t("app.description")}</p>
+          </div>
 
-        <div className="flex items-center gap-8">
-          <a
-            href="https://vite.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-transform hover:scale-110"
-          >
-            <img src="/vite.svg" className="h-24 w-24" alt="Vite logo" />
-          </a>
-          <a
-            href="https://tauri.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-transform hover:scale-110"
-          >
-            <img src="/tauri.svg" className="h-24 w-24" alt="Tauri logo" />
-          </a>
-          <a
-            href="https://react.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-transform hover:scale-110"
-          >
-            <img src={reactLogo} className="h-24 w-24" alt="React logo" />
-          </a>
-        </div>
-
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>{t("greet.title")}</CardTitle>
-            <CardDescription>
-              {t("greet.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form
-              className="flex gap-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                greet();
-              }}
+          <div className="flex items-center gap-8">
+            <a
+              href="https://vite.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-transform hover:scale-110"
             >
-              <Input
-                id="greet-input"
-                value={name}
-                onChange={(e) => setName(e.currentTarget.value)}
-                placeholder={t("greet.placeholder")}
-                className="flex-1"
-              />
-              <Button type="submit">{t("greet.button")}</Button>
-            </form>
-            {greetMsg && (
-              <p className="mt-4 rounded-md bg-muted p-3 text-sm">{greetMsg}</p>
-            )}
-          </CardContent>
-        </Card>
+              <img src="/vite.svg" className="h-24 w-24" alt="Vite logo" />
+            </a>
+            <a
+              href="https://tauri.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-transform hover:scale-110"
+            >
+              <img src="/tauri.svg" className="h-24 w-24" alt="Tauri logo" />
+            </a>
+            <a
+              href="https://react.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-transform hover:scale-110"
+            >
+              <img src={reactLogo} className="h-24 w-24" alt="React logo" />
+            </a>
+          </div>
 
-        <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-          <span>React 19</span>
-          <span>•</span>
-          <span>TypeScript</span>
-          <span>•</span>
-          <span>Tailwind CSS v4</span>
-          <span>•</span>
-          <span>shadcn/ui</span>
-          <span>•</span>
-          <span>Tauri v2</span>
-        </div>
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <CardTitle>{t("greet.title")}</CardTitle>
+              <CardDescription>{t("greet.description")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form
+                className="flex gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  greet();
+                }}
+              >
+                <Input
+                  id="greet-input"
+                  value={name}
+                  onChange={(e) => setName(e.currentTarget.value)}
+                  placeholder={t("greet.placeholder")}
+                  className="flex-1"
+                />
+                <Button type="submit">{t("greet.button")}</Button>
+              </form>
+              {greetMsg && <p className="bg-muted mt-4 rounded-md p-3 text-sm">{greetMsg}</p>}
+            </CardContent>
+          </Card>
+
+          <div className="text-muted-foreground flex flex-wrap justify-center gap-4 text-sm">
+            <span>React 19</span>
+            <span>•</span>
+            <span>TypeScript</span>
+            <span>•</span>
+            <span>Tailwind CSS v4</span>
+            <span>•</span>
+            <span>shadcn/ui</span>
+            <span>•</span>
+            <span>Tauri v2</span>
+          </div>
         </main>
       </div>
     </ThemeProvider>
