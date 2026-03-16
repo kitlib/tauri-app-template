@@ -2,3 +2,4 @@ dist
 node_modules
 src-tauri/target
 *.lock
+src/components/ui

@@ -8,7 +8,5 @@ import "./i18n";
 const pathname = window.location.pathname;
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    {pathname === "/about" ? <AboutPage /> : <App />}
-  </React.StrictMode>
+  <React.StrictMode>{pathname === "/about" ? <AboutPage /> : <App />}</React.StrictMode>
 );

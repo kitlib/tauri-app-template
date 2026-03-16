@@ -35,5 +35,17 @@
   "tray": {
     "show": "Show Window",
     "quit": "Quit"
+  },
+  "updater": {
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking...",
+    "upToDate": "You're using the latest version!",
+    "updateAvailable": "Update Available",
+    "downloading": "Downloading Update",
+    "installingVersion": "Installing version {{version}}...",
+    "versionAvailable": "Version {{version}} is available.",
+    "releaseNotes": "Release Notes:",
+    "later": "Later",
+    "installNow": "Install Now"
   }
 }

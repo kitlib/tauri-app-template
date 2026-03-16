@@ -47,11 +47,7 @@ export async function hideWindow(label: string, destroyDelay = 5000) {
  * @param parentLabel Parent window label, defaults to current window
  * @returns Centered position coordinates or center flag
  */
-export async function calcCenterPosition(
-  width: number,
-  height: number,
-  parentLabel?: string
-) {
+export async function calcCenterPosition(width: number, height: number, parentLabel?: string) {
   const parentWindow = parentLabel
     ? await WebviewWindow.getByLabel(parentLabel)
     : WebviewWindow.getCurrent();
@@ -172,11 +168,7 @@ export async function createWindow(
         try {
           const childWidth = options.width || 500;
           const childHeight = options.height || 400;
-          const centerPos = await calcCenterPosition(
-            childWidth,
-            childHeight,
-            options.parent
-          );
+          const centerPos = await calcCenterPosition(childWidth, childHeight, options.parent);
 
           if ("x" in centerPos && "y" in centerPos) {
             // Use Logical type to set window position
@@ -204,11 +196,7 @@ export async function createWindow(
       const childWidth = options.width || 500;
       const childHeight = options.height || 400;
 
-      const centerPos = await calcCenterPosition(
-        childWidth,
-        childHeight,
-        options.parent
-      );
+      const centerPos = await calcCenterPosition(childWidth, childHeight, options.parent);
 
       if ("center" in centerPos) {
         finalOptions.center = true;

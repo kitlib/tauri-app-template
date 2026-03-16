@@ -69,7 +69,7 @@ export function TitleBar({
   return (
     <div
       className={cn(
-        "h-8 flex items-center justify-between select-none bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40",
+        "bg-background/95 supports-[backdrop-filter]:bg-background/60 border-border/40 flex h-8 items-center justify-between border-b backdrop-blur select-none",
         showMaximize && isMaximized ? "" : "rounded-t-lg"
       )}
     >
@@ -77,9 +77,9 @@ export function TitleBar({
       <div
         data-tauri-drag-region
         onDoubleClick={handleDragRegionDoubleClick}
-        className="flex-grow flex items-center pl-2 gap-2"
+        className="flex flex-grow items-center gap-2 pl-2"
       >
-        {title && <span className="text-sm font-medium text-muted-foreground">{title}</span>}
+        {title && <span className="text-muted-foreground text-sm font-medium">{title}</span>}
         {leftActions}
       </div>
 
@@ -87,16 +87,12 @@ export function TitleBar({
       <div className="flex items-center">
         {rightActions}
 
-        {(rightActions && (showMinimize || showMaximize || showClose)) && (
-          <div className="h-4 w-px bg-border/40 mx-1" />
+        {rightActions && (showMinimize || showMaximize || showClose) && (
+          <div className="bg-border/40 mx-1 h-4 w-px" />
         )}
 
         {showMinimize && (
-          <button
-            onClick={handleMinimize}
-            className="title-bar-control"
-            aria-label="Minimize"
-          >
+          <button onClick={handleMinimize} className="title-bar-control" aria-label="Minimize">
             <Minus className="h-4 w-4" />
           </button>
         )}
@@ -107,11 +103,7 @@ export function TitleBar({
             className="title-bar-control"
             aria-label={isMaximized ? "Restore" : "Maximize"}
           >
-            {isMaximized ? (
-              <Minimize2 className="h-4 w-4" />
-            ) : (
-              <Maximize2 className="h-4 w-4" />
-            )}
+            {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
         )}
 

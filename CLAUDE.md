@@ -14,8 +14,9 @@ Modern desktop application template built with Tauri v2 + React 19 + TypeScript 
 
 | Module | Path | Tech Stack | Responsibility |
 |--------|------|------------|----------------|
-| Frontend | `src/` | TypeScript/React | UI, components, styles |
+| Frontend | `src/` | TypeScript/React | UI, components, styles, i18n |
 | Backend | `src-tauri/` | Rust | System calls, native features |
+| Documentation | `docs/` | Markdown | Project guides and references |
 
 ## Development
 
@@ -96,12 +97,42 @@ UI rendering, interaction, and styling.
 - @tauri-apps/api@2, @tauri-apps/plugin-opener@2
 - tailwindcss@4.2.1, shadcn/ui components
 - lucide-react@0.577.0 (icons)
+- i18next, react-i18next (internationalization)
 
 ### Configuration
 
 - `tsconfig.json` - TypeScript config (strict mode)
 - `vite.config.ts` - Vite build config
 - `components.json` - shadcn/ui config
+- `src/i18n/index.ts` - i18n configuration
+
+### Internationalization
+
+The project uses i18next for multi-language support:
+
+```typescript
+// Usage in components
+import { useTranslation } from "react-i18next";
+
+function MyComponent() {
+  const { t, i18n } = useTranslation();
+
+  return (
+    <div>
+      <h1>{t("app.title")}</h1>
+      <button onClick={() => i18n.changeLanguage("zh")}>
+        Switch Language
+      </button>
+    </div>
+  );
+}
+```
+
+**Supported Languages**: English (en), Chinese (zh)
+
+**Translation Files**: `src/i18n/locales/{en,zh}.json`
+
+See [I18N Documentation](./docs/I18N.md) for detailed usage.
 
 ---
 
@@ -139,3 +170,21 @@ System-level calls, native features, cross-platform desktop app wrapper.
 - Identifier: `com.template.tauri-app`
 - Window: 800x600
 - Dev Port: 1420
+
+---
+
+## Documentation (docs)
+
+### Available Guides
+
+- **AUTO_UPDATE.md** - Tauri auto-update configuration and GitHub Actions setup
+- **I18N.md** - Internationalization guide (English)
+- **I18N.zh-CN.md** - 国际化指南（中文）
+
+### Adding Documentation
+
+When adding new features, create corresponding documentation:
+
+1. Create English version: `docs/FEATURE.md`
+2. Create Chinese version: `docs/FEATURE.zh-CN.md`
+3. Update README.md and README.zh-CN.md if needed

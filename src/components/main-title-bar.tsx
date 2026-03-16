@@ -51,11 +51,7 @@ export function MainTitleBar() {
             className="title-bar-btn mr-0.5"
             aria-label={t("theme.toggle")}
           >
-            {theme === "dark" ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
         </>
       }

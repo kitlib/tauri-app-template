@@ -76,7 +76,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-transparent text-foreground;
+    @apply text-foreground bg-transparent;
     overflow: hidden;
   }
   #root {
@@ -86,10 +86,10 @@
 
 @layer utilities {
   .title-bar-btn {
-    @apply h-7 w-7 rounded-md flex justify-center items-center cursor-pointer text-slate-400 hover:bg-accent hover:text-accent-foreground transition-colors;
+    @apply hover:bg-accent hover:text-accent-foreground flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-slate-400 transition-colors;
   }
 
   .title-bar-control {
-    @apply h-8 w-9 flex justify-center items-center cursor-pointer text-slate-400 hover:bg-accent hover:text-accent-foreground;
+    @apply hover:bg-accent hover:text-accent-foreground flex h-8 w-9 cursor-pointer items-center justify-center text-slate-400;
   }
 }

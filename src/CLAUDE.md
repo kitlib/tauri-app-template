@@ -26,6 +26,8 @@ pnpm tauri dev  # Full Tauri app development
 | @tauri-apps/api | ^2 | Tauri frontend API |
 | tailwindcss | ^4.2.1 | CSS framework |
 | lucide-react | ^0.577.0 | Icon library |
+| i18next | ^24.2.2 | Internationalization core |
+| react-i18next | ^16.2.0 | React i18n integration |
 | typescript | ~5.8.3 | TypeScript compiler |
 | vite | ^7.0.4 | Build tool |
 | prettier | ^3.8.1 | Code formatter |
@@ -35,6 +37,7 @@ pnpm tauri dev  # Full Tauri app development
 - `../tsconfig.json` - TypeScript strict mode
 - `../vite.config.ts` - Vite build config with `@/` alias
 - `../components.json` - shadcn/ui config
+- `i18n/index.ts` - i18next configuration
 
 ### Path Alias
 
@@ -46,6 +49,32 @@ pnpm tauri dev  # Full Tauri app development
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 ```
+
+### Internationalization
+
+```typescript
+// Usage in components
+import { useTranslation } from "react-i18next";
+
+function MyComponent() {
+  const { t, i18n } = useTranslation();
+
+  return (
+    <div>
+      <h1>{t("app.title")}</h1>
+      <button onClick={() => i18n.changeLanguage("zh")}>
+        {t("language.toggle")}
+      </button>
+    </div>
+  );
+}
+```
+
+**Supported Languages**: English (en), Chinese (zh)
+
+**Translation Files**: `i18n/locales/{en,zh}.json`
+
+See [I18N Documentation](../docs/I18N.md) for detailed usage.
 
 ## Tauri API Usage
 
@@ -89,6 +118,18 @@ src/
 ├── index.css         # Global styles + Tailwind theme
 ├── vite-env.d.ts     # Vite type declarations
 ├── assets/           # Static assets
-├── components/ui/    # shadcn/ui components
-└── lib/utils.ts      # Utility functions
+├── components/       # React components
+│   ├── ui/          # shadcn/ui components
+│   ├── language-toggle.tsx
+│   ├── mode-toggle.tsx
+│   └── ...
+├── i18n/            # Internationalization
+│   ├── index.ts     # i18n configuration
+│   └── locales/     # Translation files
+│       ├── en.json
+│       └── zh.json
+├── lib/             # Utility functions
+│   └── utils.ts
+└── pages/           # Page components
+    └── about.tsx
 ```

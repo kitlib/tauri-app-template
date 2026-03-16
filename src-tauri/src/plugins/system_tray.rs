@@ -42,7 +42,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             )?;
 
             // Build tray icon
-            let tray = TrayIconBuilder::with_id("main-tray")
+            TrayIconBuilder::with_id("main-tray")
                 .menu(&menu)
                 .icon(app.default_window_icon().unwrap().clone())
                 .tooltip("Tauri App Template")

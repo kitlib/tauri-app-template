@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
-import { Github } from "lucide-react";
+import { Github, RefreshCw } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TitleBar } from "@/components/title-bar";
 import { cn } from "@/lib/utils";
@@ -9,11 +9,13 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { destroyWindow } from "@/lib/window";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
+import { useManualUpdateCheck } from "@/components/updater-dialog";
 import "../i18n";
 
 export function AboutPage() {
   const [isMaximized, setIsMaximized] = useState(false);
   const { t, i18n } = useTranslation();
+  const { checkUpdate, checking, showNoUpdate } = useManualUpdateCheck();
 
   useEffect(() => {
     const appWindow = getCurrentWebviewWindow();
@@ -61,18 +63,14 @@ export function AboutPage() {
     <ThemeProvider defaultTheme="system" storageKey="tauri-ui-theme">
       <div
         className={cn(
-          "h-screen w-screen flex flex-col bg-background overflow-hidden",
-          isMaximized ? "" : "rounded-md border border-border"
+          "bg-background flex h-screen w-screen flex-col overflow-hidden",
+          isMaximized ? "" : "border-border rounded-md border"
         )}
       >
-        <TitleBar
-          title={t("about.title")}
-          showMinimize={false}
-          showMaximize={false}
-        />
+        <TitleBar title={t("about.title")} showMinimize={false} showMaximize={false} />
 
         {/* Content area */}
-        <main className="flex-1 flex items-center justify-center overflow-hidden">
+        <main className="flex flex-1 items-center justify-center overflow-hidden">
           <div className="w-full max-w-xs space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-bold">{t("about.appName")}</h2>
@@ -98,9 +96,18 @@ export function AboutPage() {
             </div>
 
             <Button onClick={handleOpenGithub} className="w-full" variant="outline">
-              <Github className="h-4 w-4 mr-2" />
+              <Github className="mr-2 h-4 w-4" />
               GitHub
             </Button>
+
+            <Button onClick={checkUpdate} className="w-full" variant="outline" disabled={checking}>
+              <RefreshCw className={`mr-2 h-4 w-4 ${checking ? "animate-spin" : ""}`} />
+              {checking ? t("updater.checking") : t("updater.checkForUpdates")}
+            </Button>
+
+            {showNoUpdate && (
+              <p className="text-muted-foreground text-center text-sm">{t("updater.upToDate")}</p>
+            )}
           </div>
         </main>
       </div>
