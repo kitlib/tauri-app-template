@@ -56,7 +56,7 @@ jobs:
         run: |
           REPO="${{ github.repository }}"
           ENDPOINT="https://github.com/${REPO}/releases/latest/download/latest.json"
-          PUBKEY="${{ secrets.TAURI_UPDATER_PUBKEY }}"
+          PUBKEY="${{ secrets.TAURI_SIGNING_PUBLIC_KEY }}"
 
           # Replace placeholders in tauri.conf.json
           sed -i.bak "s|__TAURI_UPDATER_ENDPOINT__|${ENDPOINT}|g" src-tauri/tauri.conf.json
