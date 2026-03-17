@@ -47,5 +47,28 @@
     "releaseNotes": "更新说明：",
     "later": "稍后",
     "installNow": "立即安装"
+  },
+  "settings": {
+    "title": "设置",
+    "button": "设置",
+    "close": "关闭",
+    "appearance": {
+      "title": "外观",
+      "description": "自定义应用的外观和语言",
+      "theme": "主题",
+      "light": "浅色",
+      "dark": "深色",
+      "system": "跟随系统",
+      "language": "语言"
+    },
+    "shortcut": {
+      "title": "快捷键",
+      "description": "设置全局快捷键",
+      "placeholder": "按下组合键设置",
+      "showMain": "显示主窗口",
+      "showMainDesc": "使用快捷键快速显示主窗口",
+      "setSuccess": "已将快捷键设为 {{shortcut}}！",
+      "cleared": "已取消快捷键！"
+    }
   }
 }

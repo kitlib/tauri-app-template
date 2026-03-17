@@ -11,7 +11,11 @@ import { UpdaterDialog } from "@/components/updater-dialog";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
+import { registerShortcut } from "@/lib/shortcut";
+import { toggleWindow } from "@/lib/window";
 import "./App.css";
+
+const SHORTCUT_KEY = "global-shortcut-show-main";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -35,6 +39,17 @@ function App() {
       i18n.changeLanguage(event.payload.language);
     });
 
+    // Listen for shortcut change events from settings window
+    const unlistenShortcut = listen<{ shortcut: string }>("shortcut-changed", async (event) => {
+      console.log("Shortcut changed event received:", event.payload.shortcut);
+      const newShortcut = event.payload.shortcut;
+      if (newShortcut) {
+        await registerShortcut(newShortcut, async () => {
+          await toggleWindow("main");
+        });
+      }
+    });
+
     // Initialize tray menu with current language
     const initTrayMenu = async () => {
       try {
@@ -48,9 +63,22 @@ function App() {
     };
     initTrayMenu();
 
+    // Register global shortcut on app startup
+    const initShortcut = async () => {
+      const savedShortcut = localStorage.getItem(SHORTCUT_KEY);
+      if (savedShortcut) {
+        console.log("Registering saved shortcut:", savedShortcut);
+        await registerShortcut(savedShortcut, async () => {
+          await toggleWindow("main");
+        });
+      }
+    };
+    initShortcut();
+
     return () => {
       unlisten.then((fn) => fn());
       unlistenLanguage.then((fn) => fn());
+      unlistenShortcut.then((fn) => fn());
     };
   }, [i18n, t]);
 

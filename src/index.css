@@ -86,10 +86,44 @@
 
 @layer utilities {
   .title-bar-btn {
-    @apply hover:bg-accent hover:text-accent-foreground flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-slate-400 transition-colors;
+    @apply hover:bg-accent hover:text-accent-foreground flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-slate-400 transition-colors outline-none;
   }
 
   .title-bar-control {
-    @apply hover:bg-accent hover:text-accent-foreground flex h-8 w-9 cursor-pointer items-center justify-center text-slate-400;
+    @apply hover:bg-accent hover:text-accent-foreground flex h-8 w-9 cursor-pointer items-center justify-center text-slate-400 outline-none;
   }
+
+  .scrollbar-none {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    & {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+}
+
+/* Global scrollbar styles with theme support */
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: calc(var(--radius) - 4px);
+  background-color: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: calc(var(--radius) - 4px);
+  background-color: color-mix(in oklch, var(--muted-foreground) 30%, transparent);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+button {
+  user-select: none;
 }

@@ -22,6 +22,7 @@ A modern desktop application template built with Tauri v2 + React 19 + TypeScrip
 - 🖼️ **Custom Titlebar** - Frameless transparent window with drag, minimize, maximize, and close support
 - 🗂️ **Multi-Window Management** - Support for child windows, window lifecycle management, and delayed destruction
 - 🔔 **System Tray Integration** - Tray icon, menu, and window show/hide support
+- ⌨️ **Global Shortcuts** - Register global shortcuts that work even when app is not focused
 - 📦 **Ready to Use** - Pre-configured with Prettier and TypeScript strict mode
 - 🚀 **Fast Development** - Vite HMR + Tauri hot reload
 
@@ -99,7 +100,8 @@ pnpm format:check  # Check code formatting
 │   └── tauri.conf.json    # Tauri configuration
 ├── docs/                  # Documentation
 │   ├── AUTO_UPDATE.md     # Auto update guide
-│   └── I18N.md            # Internationalization guide
+│   ├── I18N.md            # Internationalization guide
+│   └── GLOBAL_SHORTCUT.md # Global shortcut guide
 ├── components.json        # shadcn/ui configuration
 └── package.json
 ```

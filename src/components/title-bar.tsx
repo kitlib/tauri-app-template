@@ -92,7 +92,7 @@ export function TitleBar({
         )}
 
         {showMinimize && (
-          <button onClick={handleMinimize} className="title-bar-control" aria-label="Minimize">
+          <button onClick={handleMinimize} className="title-bar-control" aria-label="Minimize" tabIndex={-1}>
             <Minus className="h-4 w-4" />
           </button>
         )}
@@ -102,6 +102,7 @@ export function TitleBar({
             onClick={handleToggleMaximize}
             className="title-bar-control"
             aria-label={isMaximized ? "Restore" : "Maximize"}
+            tabIndex={-1}
           >
             {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
@@ -112,6 +113,7 @@ export function TitleBar({
             onClick={handleClose}
             className="title-bar-control hover:bg-destructive hover:text-destructive-foreground"
             aria-label="Close"
+            tabIndex={-1}
           >
             <X className="h-4 w-4" />
           </button>

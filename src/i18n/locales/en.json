@@ -47,5 +47,28 @@
     "releaseNotes": "Release Notes:",
     "later": "Later",
     "installNow": "Install Now"
+  },
+  "settings": {
+    "title": "Settings",
+    "button": "Settings",
+    "close": "Close",
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize the appearance and language of the app",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "language": "Language"
+    },
+    "shortcut": {
+      "title": "Shortcuts",
+      "description": "Configure global shortcuts",
+      "placeholder": "Press key combination",
+      "showMain": "Show Main Window",
+      "showMainDesc": "Use shortcut to quickly show the main window",
+      "setSuccess": "Shortcut set to {{shortcut}}!",
+      "cleared": "Shortcut cleared!"
+    }
   }
 }

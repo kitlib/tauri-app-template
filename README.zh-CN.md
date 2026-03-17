@@ -22,6 +22,7 @@
 - 🖼️ **自定义标题栏** - 无边框透明窗口，支持拖拽、最小化、最大化、关闭
 - 🗂️ **多窗口管理** - 支持创建子窗口、窗口生命周期管理、延迟销毁机制
 - 🔔 **系统托盘集成** - 支持托盘图标、菜单和窗口隐藏/显示
+- ⌨️ **全局快捷键** - 支持注册全局快捷键，应用未聚焦时也能响应
 - 📦 **开箱即用** - 预配置 Prettier、TypeScript 严格模式
 - 🚀 **快速开发** - Vite HMR + Tauri 热重载
 
@@ -99,7 +100,8 @@ pnpm format:check  # 检查代码格式
 │   └── tauri.conf.json    # Tauri 配置
 ├── docs/                  # 文档
 │   ├── AUTO_UPDATE.zh-CN.md # 自动更新指南
-│   └── I18N.zh-CN.md      # 国际化指南
+│   ├── I18N.zh-CN.md      # 国际化指南
+│   └── GLOBAL_SHORTCUT.zh-CN.md # 全局快捷键指南
 ├── components.json        # shadcn/ui 配置
 └── package.json
 ```

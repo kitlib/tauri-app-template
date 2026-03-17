@@ -12,7 +12,7 @@ import { listen } from "@tauri-apps/api/event";
 import { useManualUpdateCheck } from "@/components/updater-dialog";
 import "../i18n";
 
-export function AboutPage() {
+export default function AboutPage() {
   const [isMaximized, setIsMaximized] = useState(false);
   const { t, i18n } = useTranslation();
   const { checkUpdate, checking, showNoUpdate } = useManualUpdateCheck();

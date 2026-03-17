@@ -2,7 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main", "about"],
+  "windows": ["main", "about", "settings"],
   "permissions": [
     "core:default",
     "core:window:allow-close",
@@ -10,6 +10,7 @@
     "core:window:allow-maximize",
     "core:window:allow-toggle-maximize",
     "core:window:allow-unmaximize",
+    "core:window:allow-unminimize",
     "core:window:allow-start-dragging",
     "core:window:allow-show",
     "core:window:allow-hide",
@@ -23,6 +24,7 @@
     "core:window:allow-outer-size",
     "core:window:allow-scale-factor",
     "core:window:allow-set-position",
+    "core:window:allow-center",
     "core:event:allow-emit",
     "core:event:allow-listen",
     "core:webview:allow-create-webview-window",
@@ -30,6 +32,12 @@
     "core:webview:allow-webview-size",
     "opener:default",
     "updater:default",
-    "updater:allow-check"
+    "updater:allow-check",
+    "global-shortcut:default",
+    "global-shortcut:allow-is-registered",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-register-all",
+    "global-shortcut:allow-unregister",
+    "global-shortcut:allow-unregister-all"
   ]
 }

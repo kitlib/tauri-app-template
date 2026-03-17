@@ -43,17 +43,26 @@ pnpm format         # Format code
 - Function components with Hooks
 - Path alias: `@/` maps to `src/`
 - Format with Prettier
+- **Comments and logs MUST be in English only**
+- Keep code clean and minimal
 
 ### Rust
 
 - Follow Rust naming conventions
 - Use `#[tauri::command]` macro for Tauri commands
+- **Comments and logs MUST be in English only**
 
 ### Styling
 
 - Tailwind CSS v4
 - shadcn/ui component system
 - CSS variables for theming (light/dark mode)
+
+### Code Quality Rules
+
+1. **Language**: All comments, console logs, and error messages MUST be in English
+2. **Cleanliness**: Remove unnecessary code, avoid redundant implementations
+3. **Simplicity**: Follow KISS principle - keep implementations straightforward
 
 ## Key Conventions
 
@@ -133,6 +142,56 @@ function MyComponent() {
 **Translation Files**: `src/i18n/locales/{en,zh}.json`
 
 See [I18N Documentation](./docs/I18N.md) for detailed usage.
+
+### Toast Notifications
+
+The project uses sonner (via shadcn/ui) for toast notifications:
+
+```typescript
+// Import toast function
+import { toast } from "sonner";
+
+// Show success toast
+toast.success("Operation completed!");
+
+// Show error toast
+toast.error("Something went wrong!");
+
+// Show info toast
+toast.info("Information message");
+
+// Show warning toast
+toast.warning("Warning message");
+
+// With i18n support
+import { useTranslation } from "react-i18next";
+const { t } = useTranslation();
+toast.success(t("settings.shortcut.setSuccess", { shortcut: "Ctrl+Shift+A" }));
+```
+
+**Setup Requirements**:
+1. Add `<Toaster />` component to your page/app root
+2. Import from `@/components/ui/sonner`
+
+**Example**:
+```typescript
+import { Toaster } from "@/components/ui/sonner";
+
+export default function Settings() {
+  return (
+    <ThemeProvider>
+      <Toaster />
+      <SettingsContent />
+    </ThemeProvider>
+  );
+}
+```
+
+**Features**:
+- Auto-adapts to light/dark theme
+- Supports i18n with variable interpolation
+- Auto-dismisses after duration (default: 4s)
+- Customizable icons and styling
 
 ---
 

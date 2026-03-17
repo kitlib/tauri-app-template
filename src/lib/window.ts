@@ -5,42 +5,6 @@ import { emit, once } from "@tauri-apps/api/event";
 const createWindowLoading: Record<string, boolean> = {};
 const destroyTimers: Record<string, number> = {};
 
-export async function showWindow(label: string) {
-  const window = await WebviewWindow.getByLabel(label);
-  if (!window) {
-    return;
-  }
-
-  // Clear destroy timer
-  if (destroyTimers[label]) {
-    clearTimeout(destroyTimers[label]);
-    delete destroyTimers[label];
-    console.log("Cleared window destroy timer:", label);
-  }
-
-  if (!(await window.isVisible())) {
-    await window.show();
-  }
-  if (await window.isMinimized()) {
-    await window.unminimize();
-  }
-  if (!(await window.isFocused())) {
-    await window.setFocus();
-  }
-}
-
-export async function hideWindow(label: string, destroyDelay = 5000) {
-  const window = await WebviewWindow.getByLabel(label);
-  if (!window) {
-    return;
-  }
-
-  await window.hide();
-
-  // Destroy after hiding with delay
-  await destroyWindow(label, destroyDelay);
-}
-
 /**
  * Calculate centered position of child window relative to parent window
  * @param width Child window width (logical pixels)
@@ -48,7 +12,7 @@ export async function hideWindow(label: string, destroyDelay = 5000) {
  * @param parentLabel Parent window label, defaults to current window
  * @returns Centered position coordinates or center flag
  */
-export async function calcCenterPosition(
+async function calcCenterPosition(
   width: number,
   height: number,
   parentLabel?: string
@@ -92,6 +56,58 @@ export async function calcCenterPosition(
     console.warn("Failed to calculate centered position:", e);
     return { center: true };
   }
+}
+
+export async function toggleWindow(label: string) {
+  const window = await WebviewWindow.getByLabel(label);
+  if (!window) {
+    return;
+  }
+  if (
+    (await window.isVisible()) &&
+    !(await window.isMinimized()) &&
+    (await window.isFocused())
+  ) {
+    await window.hide();
+  } else {
+    await showWindow(label);
+  }
+}
+
+export async function showWindow(label: string) {
+  const window = await WebviewWindow.getByLabel(label);
+  if (!window) {
+    return;
+  }
+
+  // Clear destroy timer
+  if (destroyTimers[label]) {
+    clearTimeout(destroyTimers[label]);
+    delete destroyTimers[label];
+    console.log("Cleared window destroy timer:", label);
+  }
+
+  if (!(await window.isVisible())) {
+    await window.show();
+  }
+  if (await window.isMinimized()) {
+    await window.unminimize();
+  }
+  if (!(await window.isFocused())) {
+    await window.setFocus();
+  }
+}
+
+export async function hideWindow(label: string, destroyDelay = 5000) {
+  const window = await WebviewWindow.getByLabel(label);
+  if (!window) {
+    return;
+  }
+
+  await window.hide();
+
+  // Destroy after hiding with delay
+  await destroyWindow(label, destroyDelay);
 }
 
 export async function destroyWindow(label: string, delay = 0) {
@@ -164,40 +180,39 @@ export async function createWindow(
   try {
     let window = await WebviewWindow.getByLabel(label);
 
-    // If window already exists, show it directly and center it
+    // If window already exists, center and show it
     if (window) {
       console.log("Window already exists, showing:", label);
 
-      // If parent window is specified, recalculate centered position
       if (options.parent) {
         try {
-          const childWidth = options.width || 500;
-          const childHeight = options.height || 400;
-          const centerPos = await calcCenterPosition(childWidth, childHeight, options.parent);
+          const size = await window.outerSize();
+          const scaleFactor = await window.scaleFactor();
+          const width = size.width / scaleFactor;
+          const height = size.height / scaleFactor;
 
-          if ("x" in centerPos && "y" in centerPos) {
-            // Use Logical type to set window position
+          const centerPos = await calcCenterPosition(width, height, options.parent);
+          if ("center" in centerPos) {
+            await window.center();
+          } else {
             await window.setPosition(new LogicalPosition(centerPos.x, centerPos.y));
-            console.log("Window centered:", centerPos);
           }
-        } catch (e) {
-          console.log("Failed to set window position:", e);
+        } catch (error) {
+          console.error("Failed to center window:", error);
         }
       }
 
-      // Show window after setting position
       await showWindow(label);
       createWindowLoading[label] = false;
       return;
     }
 
-    // If need to center relative to parent window, calculate position
+    // Create new window with centered position
     let finalOptions = { ...options };
     if (options.parent && !options.x && !options.y) {
-      const childWidth = options.width || 500;
-      const childHeight = options.height || 400;
-
-      const centerPos = await calcCenterPosition(childWidth, childHeight, options.parent);
+      const width = options.width || 500;
+      const height = options.height || 400;
+      const centerPos = await calcCenterPosition(width, height, options.parent);
 
       if ("center" in centerPos) {
         finalOptions.center = true;
