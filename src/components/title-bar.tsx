@@ -93,7 +93,7 @@ export function TitleBar({
   return (
     <div
       className={cn(
-        "bg-background/95 supports-[backdrop-filter]:bg-background/60 border-border/40 flex h-8 items-center justify-between border-b backdrop-blur select-none",
+        "bg-background/95 supports-backdrop-filter:bg-background/60 border-border/40 flex h-8 items-center justify-between border-b backdrop-blur select-none",
         showMaximize && isMaximized ? "" : "rounded-t-lg"
       )}
     >
@@ -101,7 +101,7 @@ export function TitleBar({
       <div
         data-tauri-drag-region
         onDoubleClick={handleDragRegionDoubleClick}
-        className="flex flex-grow items-center gap-2 pl-2"
+        className="flex grow items-center gap-2 pl-2"
       >
         {title && <span className="text-sm font-medium text-slate-400">{title}</span>}
         {leftActions}
