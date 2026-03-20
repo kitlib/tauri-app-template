@@ -63,11 +63,7 @@ export async function toggleWindow(label: string) {
   if (!window) {
     return;
   }
-  if (
-    (await window.isVisible()) &&
-    !(await window.isMinimized()) &&
-    (await window.isFocused())
-  ) {
+  if ((await window.isVisible()) && !(await window.isMinimized()) && (await window.isFocused())) {
     await window.hide();
   } else {
     await showWindow(label);
@@ -178,7 +174,7 @@ export async function createWindow(
   }
 
   try {
-    let window = await WebviewWindow.getByLabel(label);
+    const window = await WebviewWindow.getByLabel(label);
 
     // If window already exists, center and show it
     if (window) {
@@ -208,7 +204,7 @@ export async function createWindow(
     }
 
     // Create new window with centered position
-    let finalOptions = { ...options };
+    const finalOptions = { ...options };
     if (options.parent && !options.x && !options.y) {
       const width = options.width || 500;
       const height = options.height || 400;

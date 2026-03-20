@@ -116,7 +116,12 @@ export function TitleBar({
         )}
 
         {showMinimize && (
-          <button onClick={handleMinimize} className="title-bar-control" aria-label="Minimize" tabIndex={-1}>
+          <button
+            onClick={handleMinimize}
+            className="title-bar-control"
+            aria-label="Minimize"
+            tabIndex={-1}
+          >
             <Minus className="h-4 w-4" />
           </button>
         )}

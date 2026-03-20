@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { listen, emit } from "@tauri-apps/api/event";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,10 @@ function SettingsContent() {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
 
+  const handleShowMainWindow = useCallback(async () => {
+    await toggleWindow("main");
+  }, []);
+
   useEffect(() => {
     const appWindow = getCurrentWebviewWindow();
 
@@ -52,11 +56,7 @@ function SettingsContent() {
       unlisten.then((fn) => fn());
       unlistenLanguage.then((fn) => fn());
     };
-  }, []);
-
-  const handleShowMainWindow = async () => {
-    await toggleWindow("main");
-  };
+  }, [handleShowMainWindow, i18n]);
 
   const handleShortcutChange = async (newShortcut: string) => {
     const oldShortcut = shortcut;
@@ -103,7 +103,7 @@ function SettingsContent() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar menu */}
-        <aside className="border-border w-40 border-r flex flex-col p-4">
+        <aside className="border-border flex w-40 flex-col border-r p-4">
           <nav className="flex-1 space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -112,7 +112,7 @@ function SettingsContent() {
                   key={item.id}
                   onClick={() => setActiveSection(item.id)}
                   className={cn(
-                    "w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors",
+                    "flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
                     activeSection === item.id
                       ? "bg-accent text-accent-foreground font-medium"
                       : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
@@ -128,12 +128,14 @@ function SettingsContent() {
 
         {/* Content area */}
         <main className="flex-1 overflow-auto">
-          <div className="p-4 max-w-3xl">
+          <div className="max-w-3xl p-4">
             {activeSection === "appearance" && (
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-lg font-semibold mb-1">{t("settings.appearance.title")}</h2>
-                  <p className="text-muted-foreground text-sm">{t("settings.appearance.description")}</p>
+                  <h2 className="mb-1 text-lg font-semibold">{t("settings.appearance.title")}</h2>
+                  <p className="text-muted-foreground text-sm">
+                    {t("settings.appearance.description")}
+                  </p>
                 </div>
 
                 <div className="space-y-0">
@@ -173,7 +175,9 @@ function SettingsContent() {
                   <div className="border-t" />
 
                   <div className="flex items-center justify-between py-2.5">
-                    <label className="text-sm font-medium">{t("settings.appearance.language")}</label>
+                    <label className="text-sm font-medium">
+                      {t("settings.appearance.language")}
+                    </label>
                     <LanguageToggle />
                   </div>
                 </div>
@@ -183,15 +187,19 @@ function SettingsContent() {
             {activeSection === "shortcut" && (
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-lg font-semibold mb-1">{t("settings.shortcut.title")}</h2>
-                  <p className="text-muted-foreground text-sm">{t("settings.shortcut.description")}</p>
+                  <h2 className="mb-1 text-lg font-semibold">{t("settings.shortcut.title")}</h2>
+                  <p className="text-muted-foreground text-sm">
+                    {t("settings.shortcut.description")}
+                  </p>
                 </div>
 
                 <div className="space-y-0">
                   <div className="flex items-center justify-between py-2.5">
                     <div className="flex-1">
-                      <label className="text-sm font-medium">{t("settings.shortcut.showMain")}</label>
-                      <p className="text-muted-foreground text-xs mt-0.5">
+                      <label className="text-sm font-medium">
+                        {t("settings.shortcut.showMain")}
+                      </label>
+                      <p className="text-muted-foreground mt-0.5 text-xs">
                         {t("settings.shortcut.showMainDesc")}
                       </p>
                     </div>

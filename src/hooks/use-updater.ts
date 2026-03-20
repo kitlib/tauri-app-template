@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { checkForUpdates, downloadAndInstall, UpdateProgress, UpdateCheckResult } from "@/lib/updater";
+import {
+  checkForUpdates,
+  downloadAndInstall,
+  UpdateProgress,
+  UpdateCheckResult,
+} from "@/lib/updater";
 import type { Update } from "@tauri-apps/plugin-updater";
 
 export function useUpdater() {

@@ -58,7 +58,9 @@ export function UpdaterDialog({ manualCheck = false, onCheckComplete }: UpdaterD
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{downloading ? t("updater.downloading") : t("updater.updateAvailable")}</DialogTitle>
+          <DialogTitle>
+            {downloading ? t("updater.downloading") : t("updater.updateAvailable")}
+          </DialogTitle>
           <DialogDescription>
             {downloading ? (
               <div className="space-y-2">
